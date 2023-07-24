@@ -11,20 +11,23 @@ class InvasionAlien:
         self.pantalla=pygame.display.set_mode((self.configuracion.pantalla_ancho, self.configuracion.pantalla_largo))
         pygame.display.set_caption("Invasion Alien")
         #Configura el color de fondo
-        self.bg_color=(2130, 230, 230)
+        #self.bg_color=(230, 230, 230)
         self.nave=Nave(self)
     def correr_juego(self):
         """Inicia el bucle principal para el juego"""
         while True:
-            #Busca eventos de teclado y raton
-            for evento in pygame.event.get():
+            self._chequear_eventos()
+            self._actualizar_pantalla()
+    def _chequear_eventos(self):
+        """Responde a pulsaciones de teclas y eventos del raton"""
+        for evento in pygame.event.get():
                 if evento.type==pygame.QUIT:
                     sys.exit()
-            #Redinuja la pantalla en cada paso por el bucle
-            self.pantalla.fill(self.configuracion.bg_color)
-            self.nave.blitme()
-            #Hace visible la ultima pantalla dibiujada
-            pygame.display.flip()
+    def _actualizar_pantalla(self):
+         """Actualiza las imagenes en la pantalla y cambia a la pantalla nueva"""
+         self.pantalla.fill(self.configuracion.bg_color)
+         self.nave.blitme()
+         pygame.display.flip()
 if __name__=='__main__':
     #Hace una instancia del juego y lo ejecuta
     ia=InvasionAlien()
