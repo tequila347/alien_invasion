@@ -17,12 +17,24 @@ class InvasionAlien:
         """Inicia el bucle principal para el juego"""
         while True:
             self._chequear_eventos()
+            self.nave.update()
             self._actualizar_pantalla()
     def _chequear_eventos(self):
         """Responde a pulsaciones de teclas y eventos del raton"""
         for evento in pygame.event.get():
                 if evento.type==pygame.QUIT:
                     sys.exit()
+                elif evento.type==pygame.KEYDOWN:
+                     if evento.key==pygame.K_RIGHT:
+                            #MUEVE LA NAVE A LA DERECHA
+                            self.nave.movimiento_derecha=True
+                     elif evento.key==pygame.K_LEFT:
+                        self.nave.movimiento_izquierda=True
+                elif evento.type==pygame.KEYUP:
+                     if evento.key==pygame.K_RIGHT:
+                            self.nave.movimiento_derecha=False
+                     elif evento.key==pygame.K_LEFT:
+                            self.nave.movimiento_izquierda=False
     def _actualizar_pantalla(self):
          """Actualiza las imagenes en la pantalla y cambia a la pantalla nueva"""
          self.pantalla.fill(self.configuracion.bg_color)

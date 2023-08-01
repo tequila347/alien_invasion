@@ -6,3 +6,4 @@ class Configuracion:
         self.pantalla_ancho=1200
         self.pantalla_largo=800
         self.bg_color=(230, 230, 230) 
+        self.velocidad_nave = 1.5
