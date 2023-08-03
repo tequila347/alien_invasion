@@ -19,22 +19,27 @@ class InvasionAlien:
             self._chequear_eventos()
             self.nave.update()
             self._actualizar_pantalla()
-    def _chequear_eventos(self):
+    def _chequear_eventos(self): 
         """Responde a pulsaciones de teclas y eventos del raton"""
         for evento in pygame.event.get():
-                if evento.type==pygame.QUIT:
-                    sys.exit()
-                elif evento.type==pygame.KEYDOWN:
-                     if evento.key==pygame.K_RIGHT:
-                            #MUEVE LA NAVE A LA DERECHA
-                            self.nave.movimiento_derecha=True
-                     elif evento.key==pygame.K_LEFT:
-                        self.nave.movimiento_izquierda=True
-                elif evento.type==pygame.KEYUP:
-                     if evento.key==pygame.K_RIGHT:
-                            self.nave.movimiento_derecha=False
-                     elif evento.key==pygame.K_LEFT:
-                            self.nave.movimiento_izquierda=False
+            if evento.type==pygame.QUIT:
+                sys.exit()
+            elif evento.type==pygame.KEYDOWN:
+                self._chequear_evento_keydown(evento)
+            elif evento.type==pygame.KEYUP:
+                self._chequear_evento_keyup(evento)
+    def _chequear_evento_keydown(self, evento):
+        """Responde a las pulsaciones de teclas"""
+        if evento.key==pygame.K_RIGHT:
+            self.nave.movimiento_derecha=True
+        elif evento.key==pygame.K_LEFT:
+            self.nave.movimiento_izquierda=True
+    def _chequear_evento_keyup(self, evento):
+        """Responde a liberaciones de teclas"""
+        if evento.key==pygame.K_RIGHT:
+            self.nave.movimiento_derecha=False
+        elif evento.key==pygame.K_LEFT:
+            self.nave.movimiento_izquierda=False
     def _actualizar_pantalla(self):
          """Actualiza las imagenes en la pantalla y cambia a la pantalla nueva"""
          self.pantalla.fill(self.configuracion.bg_color)
