@@ -8,7 +8,9 @@ class InvasionAlien:
         """Inicializa el juego y crea recursos""" 
         pygame.init()
         self.configuracion=Configuracion()
-        self.pantalla=pygame.display.set_mode((self.configuracion.pantalla_ancho, self.configuracion.pantalla_largo))
+        self.pantalla=pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+        self.configuracion.pantalla_ancho=self.pantalla.get_rect().width
+        self.configuracion.pantalla_largo=self.pantalla.get_rect().height
         pygame.display.set_caption("Invasion Alien")
         #Configura el color de fondo
         #self.bg_color=(230, 230, 230)
@@ -40,6 +42,8 @@ class InvasionAlien:
             self.nave.movimiento_derecha=False
         elif evento.key==pygame.K_LEFT:
             self.nave.movimiento_izquierda=False
+        elif evento.key==pygame.K_q:
+            sys.exit()
     def _actualizar_pantalla(self):
          """Actualiza las imagenes en la pantalla y cambia a la pantalla nueva"""
          self.pantalla.fill(self.configuracion.bg_color)
