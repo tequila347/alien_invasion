@@ -23,11 +23,7 @@ class InvasionAlien:
             self._chequear_eventos()
             self.nave.update()
             self.balas.update()
-            #Se deshace de las balas que han desaparecido
-            for bala in self.balas.copy():
-                if bala.rect.bottom <=0:
-                    self.balas.remove(bala)
-            print(len(self.balas))
+            self._actualizar_balas()
             self._actualizar_pantalla()
     def _chequear_eventos(self): 
         """Responde a pulsaciones de teclas y eventos del raton"""
@@ -59,6 +55,14 @@ class InvasionAlien:
         if len(self.balas)<self.configuracion.balas_permitidas:
             nueva_bala=Bala(self)
             self.balas.add(nueva_bala)
+    def _actualizar_balas(self):
+        """Actualiza la posicion de las balas y se deshace de las viejas"""
+        #Actualiza las osiciones de las balas
+        self.balas.update()
+        #Se deshace de las balas que han desaparecido
+        for bala in self.balas.copy():
+                if bala.rect.bottom <=0:
+                    self.balas.remove(bala) 
     def _actualizar_pantalla(self):
          """Actualiza las imagenes en la pantalla y cambia a la pantalla nueva"""
          self.pantalla.fill(self.configuracion.bg_color)
