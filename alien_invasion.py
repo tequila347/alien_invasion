@@ -3,6 +3,7 @@ import pygame
 from configuracion import Configuracion
 from nave import Nave
 from bala import Bala
+from alien import Alien
 class InvasionAlien:
     """Clase general para gestionar los recursos y el comportamiento del juego"""
     def __init__(self):
@@ -17,6 +18,9 @@ class InvasionAlien:
         #self.bg_color=(230, 230, 230)
         self.nave=Nave(self)
         self.balas=pygame.sprite.Group()
+        self.aliens=pygame.sprite.Group()
+
+        
     def correr_juego(self):
         """Inicia el bucle principal para el juego"""
         while True:
@@ -24,6 +28,7 @@ class InvasionAlien:
             self.nave.update()
             self.balas.update()
             self._actualizar_balas()
+            self._crear_flota()
             self._actualizar_pantalla()
     def _chequear_eventos(self): 
         """Responde a pulsaciones de teclas y eventos del raton"""
@@ -63,12 +68,28 @@ class InvasionAlien:
         for bala in self.balas.copy():
                 if bala.rect.bottom <=0:
                     self.balas.remove(bala) 
+    def _crear_flota(self):
+        """Crea la flota de aliens"""
+        #Crea un alien y halla el numero de aliens en una fila
+        #El espacio entre aliens es igual a la anchura de un alien
+        alien=Alien(self)
+        alien_ancho=alien.rect.width
+        espacio_disponible_x=self.configuracion.pantalla_ancho - (2*alien_ancho)
+        numero_aliens_x=espacio_disponible_x // (2*alien_ancho)
+        #Crea la primera fila de aliens
+        for numero_alien in range(numero_aliens_x):
+            #Crea un alien y lo coloca en la fila
+            alien=Alien(self)
+            alien.x=alien_ancho + 2 * alien_ancho * numero_alien
+            alien.rect.x=alien.x
+            self.aliens.add(alien)
     def _actualizar_pantalla(self):
          """Actualiza las imagenes en la pantalla y cambia a la pantalla nueva"""
          self.pantalla.fill(self.configuracion.bg_color)
          self.nave.blitme()
          for bala in self.balas.sprites():
                 bala.dibujar_bala()
+         self.aliens.draw(self.pantalla)
          pygame.display.flip()
 if __name__=='__main__':
     #Hace una instancia del juego y lo ejecuta
