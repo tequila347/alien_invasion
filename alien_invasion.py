@@ -73,16 +73,26 @@ class InvasionAlien:
         #Crea un alien y halla el numero de aliens en una fila
         #El espacio entre aliens es igual a la anchura de un alien
         alien=Alien(self)
-        alien_ancho=alien.rect.width
+        alien_ancho, alien_alto = alien.rect.size
         espacio_disponible_x=self.configuracion.pantalla_ancho - (2*alien_ancho)
         numero_aliens_x=espacio_disponible_x // (2*alien_ancho)
-        #Crea la primera fila de aliens
-        for numero_alien in range(numero_aliens_x):
-            #Crea un alien y lo coloca en la fila
-            alien=Alien(self)
-            alien.x=alien_ancho + 2 * alien_ancho * numero_alien
-            alien.rect.x=alien.x
-            self.aliens.add(alien)
+        #Determina el numero de filas de aliens que caben en la pantalla#
+        alto_nave=self.nave.rect.height
+        espacio_disponible_y= (self.configuracion.pantalla_largo - 
+                               (3 * alien_alto)-alto_nave)
+        numero_filas=espacio_disponible_y//(2 * alien_alto)
+        #Crea la flota completa de aliens
+        for numero_fila in range(numero_filas):
+            for numero_alien in range(numero_aliens_x):
+                self._crear_alien(numero_alien, numero_fila)
+    def _crear_alien(self, numero_alien, numero_filas):
+        """Crea un alien y lo coloca en una fila"""
+        alien=Alien(self)
+        alien_ancho,alien_alto=alien.rect.size
+        alien.x=alien_ancho + 2 * alien_ancho * numero_alien
+        alien.rect.x=alien.x
+        alien.rect.y=alien.rect.height + 2 * alien.rect.height * numero_filas
+        self.aliens.add(alien)
     def _actualizar_pantalla(self):
          """Actualiza las imagenes en la pantalla y cambia a la pantalla nueva"""
          self.pantalla.fill(self.configuracion.bg_color)
