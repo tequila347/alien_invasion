@@ -20,15 +20,15 @@ class InvasionAlien:
         self.balas=pygame.sprite.Group()
         self.aliens=pygame.sprite.Group()
 
-        
+        self._crear_flota()
     def correr_juego(self):
         """Inicia el bucle principal para el juego"""
         while True:
             self._chequear_eventos()
             self.nave.update()
-            self.balas.update()
+            #self.balas.update()
             self._actualizar_balas()
-            self._crear_flota()
+            self._update_aliens()
             self._actualizar_pantalla()
     def _chequear_eventos(self): 
         """Responde a pulsaciones de teclas y eventos del raton"""
@@ -68,6 +68,15 @@ class InvasionAlien:
         for bala in self.balas.copy():
                 if bala.rect.bottom <=0:
                     self.balas.remove(bala) 
+    def _update_aliens(self):
+        """Comprueba si la flota esta en un borde,
+            despues actualiza las posiciones de todos los aliens de la flota."""
+        #self.check_flota_borde()
+        if self.check_flota_borde():
+            for alien in self.aliens.sprites():
+                alien.rect.y+=self.configuracion.velocidad_caida_flota
+            self.configuracion.flota_direccion *=-1
+        self.aliens.update()
     def _crear_flota(self):
         """Crea la flota de aliens"""
         #Crea un alien y halla el numero de aliens en una fila
@@ -85,6 +94,17 @@ class InvasionAlien:
         for numero_fila in range(numero_filas):
             for numero_alien in range(numero_aliens_x):
                 self._crear_alien(numero_alien, numero_fila)
+    def check_flota_borde(self):
+        """Responde adecuadamente si un alien ha llegado al borde"""
+        for alien in self.aliens.sprites():
+            if alien.check_bordes():
+                self._cambiar_flota_direccion()
+                break
+    def _cambiar_flota_direccion(self):
+        """Baja toda la flota y cambia su direccion"""
+        for alien in self.aliens.sprites():
+            alien.rect.y+=self.configuracion.velocidad_caida_flota
+        self.configuracion.flota_direccion*=-1    
     def _crear_alien(self, numero_alien, numero_filas):
         """Crea un alien y lo coloca en una fila"""
         alien=Alien(self)
